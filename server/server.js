@@ -1,13 +1,26 @@
 const express = require("express");
+const session = require("express-session");
+const passport = require("passport");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const mongoose = require("mongoose");
+const authRoute = require("./routes/authRoute");
+require("./middlewares/auth");
 //
 dotenv.config();
 require("./db/db");
 const PORT = process.env.PORT || 4000;
 const app = express();
 //
+app.use(session({ secret: process.env.SECRET }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401);
+}
+
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
@@ -33,6 +46,10 @@ const userSchema = mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 const imageSchema = mongoose.Schema({
+  URL: {
+    type: String,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -40,8 +57,48 @@ const imageSchema = mongoose.Schema({
 });
 
 const Image = mongoose.model("Image", imageSchema);
+
+// image route
+app.post("/image", async (req, res) => {
+  try {
+    const { URL } = req.body;
+    const image = new Image({ URL });
+    const saved = await image.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.get("/image", async (req, res) => {
+  try {
+    const images = await Image.find();
+    res.status(200).send({
+      status: "success",
+      data: images,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send('<a href="/auth/google">Authenticate with Google</a>');
+});
+
+app.use("/auth", authRoute);
+
+app.get("/protected", isLoggedIn, (req, res) => {
+  res.send(`Hello ${req.user.displayName}`);
+});
+
+app.get("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy();
+    res.send("Goodbye!");
+  });
 });
 
 app.listen(PORT, () => {
