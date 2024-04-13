@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
-console.log("clientId", import.meta.env.VITE_CLIENT_ID);
 const activeChainId = ChainId.Mumbai;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
