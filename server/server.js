@@ -17,7 +17,29 @@ app.use((req, res, next) => {
   console.log("body", req.body);
   next();
 });
+const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  Images: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
+    },
+  ],
+});
 
+const User = mongoose.model("User", userSchema);
+
+const imageSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+});
+
+const Image = mongoose.model("Image", imageSchema);
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
