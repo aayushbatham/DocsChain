@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
-const env = await import.meta.env;
 
-const clientId = env.clientId;
+const clientId = '7b11d6a95c83dc53431667ef5799f0ca';
 console.log(clientId);
 
 const activeChainId = ChainId.Mumbai;

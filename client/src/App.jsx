@@ -4,7 +4,7 @@ import Upload from './services/ipfsService';
 const App = () => {
   return (
     <div>
-      <Upload/>
+      <Upload />
     </div>
   )
 }
