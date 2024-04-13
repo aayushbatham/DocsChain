@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 //
 dotenv.config();
-require('./db/db')
+require("./db/db");
 const PORT = process.env.PORT || 4000;
 const app = express();
 //
