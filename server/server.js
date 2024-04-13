@@ -8,7 +8,7 @@ const authRoute = require("./routes/authRoute");
 require("./middlewares/auth");
 //
 dotenv.config();
-require('./db/db')
+require("./db/db");
 const PORT = process.env.PORT || 4000;
 const app = express();
 //
