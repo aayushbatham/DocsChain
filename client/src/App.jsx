@@ -1,8 +1,11 @@
 import React from 'react'
+import Upload from './services/ipfsService';
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Upload/>
+    </div>
   )
 }
 
