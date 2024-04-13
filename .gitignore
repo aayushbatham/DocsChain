@@ -1,0 +1,25 @@
+# Ignore environment variables file
+.env
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore build files
+/build
+
+# Ignore compiled contracts
+/contracts/build
+
+# Ignore dependencies
+/client/node_modules
+/server/node_modules
+
+# Ignore any local development server configurations
+/client/.env.local
+/server/.env.local
+/client/.env
+/server/.env
+
+# Ignore IDE files
+.idea
+.vscode
