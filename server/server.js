@@ -30,56 +30,6 @@ app.use((req, res, next) => {
   console.log("body", req.body);
   next();
 });
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  Images: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Image",
-    },
-  ],
-});
-
-const User = mongoose.model("User", userSchema);
-
-const imageSchema = mongoose.Schema({
-  URL: {
-    type: String,
-    required: true,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
-
-const Image = mongoose.model("Image", imageSchema);
-
-// image route
-app.post("/image", async (req, res) => {
-  try {
-    const { URL } = req.body;
-    const image = new Image({ URL });
-    const saved = await image.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    console.log(err);
-  }
-});
-app.get("/image", async (req, res) => {
-  try {
-    const images = await Image.find();
-    res.status(200).send({
-      status: "success",
-      data: images,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 app.get("/", (req, res) => {
   res.send('<a href="/auth/google">Authenticate with Google</a>');
