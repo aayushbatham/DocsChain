@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
 
 app.use('/auth', authRoute);
 
+
 app.get('/protected', isLoggedIn, (req, res) => {
     res.send(`Hello ${req.user.displayName}`);
   });
