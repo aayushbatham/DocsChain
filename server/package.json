@@ -15,7 +15,8 @@
     "nodemon": "^3.1.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "cpp": "g++ -Wall LL.cpp -o output"
   },
   "name": "server",
   "version": "1.0.0",
