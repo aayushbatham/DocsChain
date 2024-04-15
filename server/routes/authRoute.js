@@ -38,6 +38,8 @@ router.post('/signup', async (req, res) => {
     res.status(500).send('Error registering user');
   }
 });
+
+
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');

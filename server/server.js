@@ -46,23 +46,24 @@ app.use("/auth", authRoute);
 app.get("/protected", isLoggedIn, (req, res) => {
   res.send(`Hello ${req.user.displayName}`);
 });
+
 app.get("/login", async (req, res) => {
-  const { username, password, id } = req.body;
-  if (!username || !password) {
+  const { email, password} = req.body;
+  if (!email || !password) {
     return res
       .status(400)
-      .json({ message: "Invalid username or password", status: 400 });
+      .json({ message: "Invalid email or password", status: 400 });
   }
   const user = await User.findById(id).lean();
   if (!user) {
     return res
       .status(401)
-      .json({ message: "Invalid username or password", status: 401 });
+      .json({ message: "Invalid email or password", status: 401 });
   }
   if (user.password !== password) {
     return res
       .status(402)
-      .json({ message: "Invalid username or password", status: 402 });
+      .json({ message: "Invalid email or password", status: 402 });
   }
   res
     .status(200)
