@@ -21,6 +21,7 @@ const Signup = () => {
             if (response.status === 200) {
                 // Login successful, handle redirect or show success message
                 console.log(response.data.message);
+                window.location.href = '/dashboard'
                 // Redirect to dashboard or another page
             } else {
                 // Login failed, show error message

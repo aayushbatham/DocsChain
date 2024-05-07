@@ -1,4 +1,3 @@
-// userController.js
 const bcrypt = require('bcrypt');
 const User = require('../models/userSchema');
 
@@ -55,6 +54,6 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  req.session.destroy(); // Example: Destroy session (for session-based authentication)
+  req.session.destroy(); // Destroy session (for session-based authentication)
   res.status(200).json({ message: 'Logout successful' });
 };

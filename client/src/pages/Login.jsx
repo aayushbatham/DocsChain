@@ -16,18 +16,16 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        // Login successful, handle redirect or show success message
+
         console.log(response.data.message);
-        history.push('/dashboard');
-        // Redirect to dashboard or another page
+        window.location.href = '/dashboard'
       } else {
-        // Login failed, show error message
         console.error(response.data.message);
         setMessage(response.data.message);
       }
     } catch (error) {
       console.error('Error:', error.message);
-      setMessage('Internal server error wa');
+      setMessage('Internal server error');
     }
   };
 

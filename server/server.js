@@ -1,23 +1,27 @@
 const express = require("express");
 const session = require("express-session");
+const uuid = require('uuid');
 // const passport = require("passport");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const authRoute = require("./routes/authRoute");
 const User = require("./models/userSchema");
 require("./middlewares/auth");
-//
+
 
 const userRoutes = require("./routes/userRoutes.js");
-//
+
 dotenv.config();
 require("./db/db");
 const PORT = process.env.PORT || 4000;
 const app = express();
-//
-// app.use(session({ secret: process.env.SECRET }));
+
+app.use(session({
+  secret: 'gjwdkjtk253fzd37', 
+  resave: false,
+  saveUninitialized: true
+}));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
@@ -36,9 +40,14 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/user", userRoutes);
+app.use("/user", userRoutes, (req, res)=>{
+  const sessionToken = uuid.v4();
+  req.session.userId = sessionToken;
+  res.json({ sessionToken });
+  console.log(sessionToken);
+});
 app.get("/", (req, res) => {
-  res.send('Server running on port 4000');
+  res.send(`Server running on port ${process.env.PORT}`);
 });
 
 // app.get("/protected", isLoggedIn, (req, res) => {
