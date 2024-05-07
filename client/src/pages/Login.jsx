@@ -1,23 +1,52 @@
-import React from 'react'
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
+import axios from 'axios';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:4000/user/login ', {
+        email,
+        password
+      });
+
+      if (response.status === 200) {
+        // Login successful, handle redirect or show success message
+        console.log(response.data.message);
+        history.push('/dashboard');
+        // Redirect to dashboard or another page
+      } else {
+        // Login failed, show error message
+        console.error(response.data.message);
+        setMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      setMessage('Internal server error wa');
+    }
+  };
+
   return (
     <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <Navbar/>
+      <Navbar />
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600 max-w">
           Or
-          <a href="#" class="font-medium text-purple-600 hover:text-purple-500">
-          &nbsp;create an account
+          <a href="/signup" class="font-medium text-purple-600 hover:text-purple-500">
+            &nbsp;create an account
           </a>
         </p>
       </div>
 
-      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <form class="mt-8 sm:mx-auto sm:w-full sm:max-w-md" onSubmit={handleSubmit}>
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form class="space-y-6" action="#" method="POST">
             <div>
@@ -25,7 +54,7 @@ const Login = () => {
                 Email address
               </label>
               <div class="mt-1">
-                <input id="email" name="email" type="email" autocomplete="email" required
+                <input id="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" type="email" autocomplete="email" required
                   class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Enter your email address" />
               </div>
@@ -36,7 +65,7 @@ const Login = () => {
                 Password
               </label>
               <div class="mt-1">
-                <input id="password" name="password" type="password" autocomplete="current-password" required
+                <input id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" autocomplete="current-password" required
                   class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Enter your password" />
               </div>
@@ -59,7 +88,7 @@ const Login = () => {
             </div>
 
             <div>
-              <button type="submit"
+              <button type="submit" onClick={handleSubmit}
                 class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Sign in
               </button>
@@ -82,14 +111,15 @@ const Login = () => {
               <div>
                 <a href="http://localhost:4000/auth/google"
                   class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    <img class="h-5 w-5" src="https://www.svgrepo.com/show/506498/google.svg"
+                  <img class="h-5 w-5" src="https://www.svgrepo.com/show/506498/google.svg"
                     alt="" />
                 </a>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
+      {message && <div>{message}</div>}
     </div>
   )
 }

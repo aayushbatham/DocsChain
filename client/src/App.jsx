@@ -3,6 +3,7 @@ import Upload from './services/ipfsService';
 import Homepage from './pages/Homepage';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/signup",
+    element: <Signup />,
+  }
 ]);
 
 

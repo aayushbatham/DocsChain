@@ -12,14 +12,10 @@ const documentSchema = new mongoose.Schema({
     enum: ['Aadhaar', 'PAN', 'Passport', 'Driving Licence'],
     required: true
   },
-  details: {
-    type: mongoose.Schema.Types.Mixed,
+  documentHash: {
+    type: String,
     required: true
-  },
-  verified: {
-    type: Boolean,
-    default: false
-  },
+  }
   // Add timestamps to track creation and last update time
 }, { timestamps: true });
 
