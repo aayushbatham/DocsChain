@@ -5,15 +5,15 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 
-// Simulate an authentication service
 const auth = {
-  isAuthenticated: true,  // Set this based on actual authentication logic
+  isAuthenticated: true,  
 };
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   return auth.isAuthenticated ? children : <Navigate to="/login" replace />;
 };
+
 
 const router = createBrowserRouter([
   {

@@ -1,8 +1,11 @@
 import React from 'react'
+import UploadIpfs from '../services/ipfsService.jsx'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>Dashboard
+      <UploadIpfs />
+    </div>
   )
 }
 

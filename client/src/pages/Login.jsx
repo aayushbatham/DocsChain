@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Navbar from '../components/Navbar'
+import { useState } from 'react';
+import Navbar from '../components/Navbar';
 import axios from 'axios';
 
 const Login = () => {
@@ -10,15 +10,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/user/login ', {
+      const response = await axios.post('http://localhost:4000/user/login', {
         email,
         password
+      }, {
+        withCredentials: true // This ensures cookies are sent and received
       });
 
       if (response.status === 200) {
-
-        console.log(response.data.message);
-        window.location.href = '/dashboard'
+        window.location.href = '/dashboard';
       } else {
         console.error(response.data.message);
         setMessage(response.data.message);
