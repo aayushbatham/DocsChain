@@ -5,13 +5,13 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 
-const auth = {
-  isAuthenticated: true,  
-};
+// const auth = {
+//   isAuthenticated: true,
+// };
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  return auth.isAuthenticated ? children : <Navigate to="/login" replace />;
+  return localStorage.getItem('isAuthenticated') ? <Dashboard /> : <Login />;
 };
 
 

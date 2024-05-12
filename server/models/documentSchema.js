@@ -12,7 +12,7 @@ const documentSchema = new mongoose.Schema({
     enum: ['Aadhaar', 'PAN', 'Passport', 'Driving Licence'],
     required: true
   },
-  documentHash: {
+  documents: {
     type: String,
     required: true
   }

@@ -18,6 +18,7 @@ const Login = () => {
       });
 
       if (response.status === 200) {
+        localStorage.setItem('isAuthenticated', 'true');
         window.location.href = '/dashboard';
       } else {
         console.error(response.data.message);
