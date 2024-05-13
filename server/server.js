@@ -6,7 +6,6 @@ require('dotenv').config();
 require("./db/db");
 
 const userRoutes = require('./routes/userRoutes');
-const jwtMiddleware = require('./middlewares/jwtMiddleware');
 const document = require('./routes/documentRoute'); 
 
 const app = express();
@@ -21,8 +20,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Authorization'],
 }));
+
 // Routes
-// app.use('/user', jwtMiddleware);
 app.use('/user', userRoutes);
 app.use('/document', document);
 

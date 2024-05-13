@@ -52,6 +52,7 @@ exports.login = async (req, res) => {
       maxAge: 3600000,
       secure: false, // Change to true in production
     });
+
     return res.status(200).json({ message: 'Login successful', user });
   } catch (error) {
     console.error('Error in login:', error);

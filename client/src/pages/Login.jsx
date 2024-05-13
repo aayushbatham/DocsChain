@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,10 +17,13 @@ const Login = () => {
       }, {
         withCredentials: true // This ensures cookies are sent and received
       });
-
+      console.log(response);
+      
       if (response.status === 200) {
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('token', Cookies.get('jwtToken'));
         window.location.href = '/dashboard';
+      
       } else {
         console.error(response.data.message);
         setMessage(response.data.message);

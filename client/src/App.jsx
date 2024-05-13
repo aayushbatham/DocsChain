@@ -4,6 +4,8 @@ import Homepage from './pages/Homepage';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Upload from './pages/DocumentUploadPage';
+import Verify from './pages/DocumentVerificationPage';
 
 // const auth = {
 //   isAuthenticated: true,
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
         <Dashboard />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/dashboard/upload",
+    element: <Upload/>,
+  },
+  {
+    path: "/dashboard/verify",
+    element: <Verify/>,
   }
 ]);
 

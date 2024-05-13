@@ -1,44 +1,58 @@
-import { useStorageUpload } from "@thirdweb-dev/react";
 import React, { useState } from "react";
 import axios from "axios";
+import CryptoJS from 'crypto-js';
 
 const IpfsService = () => {
   const [file, setFile] = useState(null);
-  const { mutateAsync: upload } = useStorageUpload();
+  const [type, setType] = useState(""); // State to store the selected document type
 
   const uploadToIpfs = async () => {
-    if (!file) {
-      console.error("No file selected");
+    if(!file || !type) {
+      alert('Please select a file or specify a type');
       return;
     }
-
     try {
-      // Get the authentication token from local storage or cookies
-      const authToken = document.cookie.replace(/(?:(?:^|.*;\s*)jwtToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
-      // Include the authentication token in the request headers
-      const headers = {
-        Authorization: `${authToken}`,
-      };
-
-      // Upload the file to IPFS
-      const uploadResponse = await upload({
-        data: [file],
-        options: {
-          uploadWithGatewayUrl: true,
-          uploadWithoutDirectory: true,
-        },
+      const formData = new FormData();
+      formData.append("file", file);
+      const metadata = JSON.stringify({
+        name: type,
       });
-
-      // Extract the IPFS URL from the response
-      const ipfsUrl = uploadResponse;
-
-      // Associate the uploaded document with the user on the backend
-      await axios.post("http://localhost:4000/document/document", { ipfsUrl }, { headers });
-
-      console.log("Document uploaded to IPFS and associated with user", ipfsUrl);
-    } catch (error) {
-      console.error("Error uploading document to IPFS:", error);
+      formData.append("pinataMetadata", metadata);
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+      // console.log(resData);
+      const hashedContent = CryptoJS.SHA256(file);
+      const hash = hashedContent.toString(CryptoJS.enc.Hex);
+      console.log(hash);
+      // const hash = resData.IpfsHash;
+      const docType = type;
+      const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${resData.IpfsHash}`;
+      console.log(ipfsUrl, hash, docType);
+      const response = await axios.post(
+        "http://localhost:4000/document/document",
+        { ipfsUrl, type, hash },
+        {
+          headers: { Authorization: `${localStorage.getItem("token")}` },
+        }
+      );
     }
+    catch(error) {
+      console.error('Error uploading to IPFS:', error);
+    }
+   
   };
 
   return (
@@ -51,6 +65,16 @@ const IpfsService = () => {
           }
         }}
       />
+      <select
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+      >
+        <option value="">Select Document Type</option>
+        <option value="Aadhaar">Aadhaar</option>
+        <option value="PAN">PAN</option>
+        <option value="Passport">Passport</option>
+        <option value="Driving Licence">Driving Licence</option>
+      </select>
       <button onClick={uploadToIpfs}>Upload</button>
     </div>
   );

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Define document schema
 const documentSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -12,7 +12,11 @@ const documentSchema = new mongoose.Schema({
     enum: ['Aadhaar', 'PAN', 'Passport', 'Driving Licence'],
     required: true
   },
-  documents: {
+  ipfsUrl: {
+    type: String,
+    required: true
+  },
+  hash: {
     type: String,
     required: true
   }
