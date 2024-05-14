@@ -55,7 +55,7 @@ const IpfsService = () => {
   };
 
   return (
-    <div>
+    <div> 
       <input
         type="file"
         onChange={(e) => {
