@@ -54,4 +54,19 @@ router.post('/verify', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+router.get('/documents', verifyToken, async (req, res) => {
+  try {
+    // Get the authenticated user's ID from the request
+    const userId = req.user.userId;
+
+    // Fetch documents associated with the user from the database
+    const documents = await Document.find({ userId });
+    res.status(200).json(documents);
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;

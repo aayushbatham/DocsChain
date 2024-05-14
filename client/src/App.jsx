@@ -16,7 +16,6 @@ const ProtectedRoute = ({ children }) => {
   return localStorage.getItem('isAuthenticated') ? <Dashboard /> : <Login />;
 };
 
-
 const router = createBrowserRouter([
   {
     path: "/",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import CryptoJS from 'crypto-js';
+import generateFileHash from "../services/generateHash";
 
 const IpfsService = () => {
   const [file, setFile] = useState(null);
@@ -34,8 +34,7 @@ const IpfsService = () => {
       );
       const resData = await res.json();
       // console.log(resData);
-      const hashedContent = CryptoJS.SHA256(file);
-      const hash = hashedContent.toString(CryptoJS.enc.Hex);
+      const hash = await generateFileHash(file);
       console.log(hash);
       // const hash = resData.IpfsHash;
       const docType = type;

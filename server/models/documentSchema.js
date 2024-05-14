@@ -10,7 +10,8 @@ const documentSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ['Aadhaar', 'PAN', 'Passport', 'Driving Licence'],
-    required: true
+    required: true,
+    unique: true
   },
   ipfsUrl: {
     type: String,
