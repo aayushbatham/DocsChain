@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import downloadDocumentFromPinata from '../services/DownloadDocumentFromPinata';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Import images
 import aadharImage from '../assets/aadhar.png';
 import panImage from '../assets/pan.png';
 import drivingLicenseImage from '../assets/license.png';
-// import defaultImage from '../assets/default_document.jpg';
+import passportImage from '../assets/passport.webp';
 
 const StoragePage = () => {
   const [documents, setDocuments] = useState([]);
@@ -16,7 +18,7 @@ const StoragePage = () => {
     const fetchDocuments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/document/documents",
+          "http://localhost:4000/document/document",
           {
             headers: { Authorization: `${localStorage.getItem("token")}` },
           }
@@ -24,6 +26,7 @@ const StoragePage = () => {
         setDocuments(response.data);
       } catch (error) {
         console.error('Error fetching documents:', error);
+        toast.error('Error fetching documents');
       }
     };
 
@@ -41,21 +44,23 @@ const StoragePage = () => {
       case 'Aadhaar':
         return aadharImage;
       case 'PAN':
-        return panImage; 
+        return panImage;
       case 'Driving Licence':
         return drivingLicenseImage;
+      case 'Passport':
+        return passportImage;
       default:
-        return Image.png;
+        return '';
     }
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8 animate-fade-in">Your Documents</h1>
 
-      {/* new code starts here */}
-      <div className="container mx-auto  p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
         {documents.map((document) => (
-          <div key={document.id} className="relative flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 ">
+          <div key={document.id} className="relative flex flex-col rounded-xl bg-white text-gray-700 shadow-lg p-6 transition transform hover:-translate-y-1 hover:shadow-xl duration-300 animate-fade-in-up">
             <div className="relative h-48 overflow-hidden rounded-xl bg-gray-100 shadow-lg">
               <img
                 src={getDocumentImage(document.type)}
@@ -64,13 +69,16 @@ const StoragePage = () => {
               />
             </div>
             <div className="text-center p-6">
-              <h4 className="mb-2 text-xl font-semibold leading-snug tracking-normal text-blue-gray-900">
+              <h4 className="mb-2 text-xl font-semibold leading-snug tracking-normal text-gray-900">
                 {document.type}
               </h4>
               <div className="flex justify-center items-center text-base font-medium leading-relaxed text-gray-600">
                 {document.hash.substring(0, 5)}...
                 <button
-                  onClick={() => navigator.clipboard.writeText(document.hash)}
+                  onClick={() => {
+                    navigator.clipboard.writeText(document.hash);
+                    toast.success('Hash copied to clipboard');
+                  }}
                   className="ml-2 text-blue-600 hover:text-blue-800"
                   title="Copy to clipboard"
                 >
@@ -111,51 +119,9 @@ const StoragePage = () => {
           </div>
         ))}
       </div>
-        {/* new code ends here */}
-
+      <ToastContainer />
     </div>
   );
 };
 
 export default StoragePage;
-
-
-{/* <h1 className="font-bold text-2xl text-gray-800 mb-6">Your Documents</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow overflow-hidden">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="text-left px-6 py-4 text-gray-600">Name</th>
-              <th className="text-left px-6 py-4 text-gray-600">Hash</th>
-              <th className="text-left px-6 py-4 text-gray-600">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {documents.map((document) => (
-              <tr key={document.id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-4 text-gray-700">{document.type}</td>
-                <td className="px-6 py-4 text-gray-700">{document.hash}</td>
-                <td className="px-6 py-4">
-                  <a
-                    href={document.ipfsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    View
-                  </a>
-
-                  <a
-                    href="#"
-                    onClick={() => handleDownloadClick(document)}
-                    className="text-blue-600 hover:text-blue-800 pl-4"
-                  >
-                    Download
-                  </a>
-                </td>
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}

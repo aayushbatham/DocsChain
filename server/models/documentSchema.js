@@ -10,8 +10,7 @@ const documentSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ['Aadhaar', 'PAN', 'Passport', 'Driving Licence'],
-    required: true,
-    unique: true
+    required: true
   },
   ipfsUrl: {
     type: String,
@@ -19,7 +18,12 @@ const documentSchema = new mongoose.Schema({
   },
   hash: {
     type: String,
-    required: true
+    required: true,
+    unique: true
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now
   }
   // Add timestamps to track creation and last update time
 }, { timestamps: true });

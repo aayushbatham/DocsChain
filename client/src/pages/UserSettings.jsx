@@ -58,57 +58,66 @@ const UserSettings = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">User Settings</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
+    <div className="flex justify-center h-screen">
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-lg overflow-hidden shadow-md mb-8">
+          <div className="px-6 py-4">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 mr-4">
+                <img className="h-12 w-12 rounded-full object-cover" src="profile.jpg" alt="Profile" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">{username}</h2>
+                <p className="text-gray-600">@{username}</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Current Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
+        <div className="bg-white rounded-lg overflow-hidden shadow-md">
+          <div className="px-6 py-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Change Password</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block mb-2 font-semibold">Current Password:</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2 font-semibold">New Password:</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2 font-semibold">Confirm New Password:</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              >
+                Save Changes
+              </button>
+            </form>
+            {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">New Password:</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Confirm New Password:</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-        >
-          Save Changes
-        </button>
-      </form>
-      {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
+      </div>
     </div>
   );
 };
