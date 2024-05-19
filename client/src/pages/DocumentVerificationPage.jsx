@@ -27,26 +27,28 @@ const DocumentVerificationPage = () => {
     try {
       // Generate the hash of the selected file
       const hash = await generateFileHash(file);
-
+  
       // Send the hash to the backend for verification
       const response = await axios.post(
         'http://localhost:4000/document/verify',
         { hash },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
-
+  
       if (response.status === 200) {
-        const { message, user, _id} = response.data;
+        const { message, user} = response.data;
         console.log('Verification successful. User:', user);
+        console.log("This")
         notifySuccess();
         setVerificationResult(user);
+        fetchAuditLogs(response.data.documentId); // Pass documentId to fetchAuditLogs
       } else if (response.status === 204) {
         console.log('Document is not valid');
         setVerificationResult(null);
         setAuditLogs([]); // Clear audit logs
         notifyError();
       }
-
+  
       console.log('Verification response:', response.data);
     } catch (error) {
       console.error('Error verifying document:', error);
@@ -64,6 +66,7 @@ const DocumentVerificationPage = () => {
       console.error('Error fetching audit logs:', error);
     }
   };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Verify Your Document</h1>
@@ -97,7 +100,7 @@ const DocumentVerificationPage = () => {
         </div>
       )}
       {auditLogs.length > 0 && (
-        <div className="mt-8 p-4 bg-yellow-100 rounded-lg shadow-md animate-fade-in-down">
+        <div className="mt-8 p-4 bg-grey-100 rounded-lg shadow-md animate-fade-in-down">
           <h2 className="text-lg font-semibold">Audit Logs:</h2>
           {auditLogs.map((log) => (
             <div key={log._id} className="border-b border-gray-300 mb-2 pb-2">

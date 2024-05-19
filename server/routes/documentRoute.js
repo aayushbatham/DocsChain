@@ -39,13 +39,12 @@ router.post('/verify', verifyToken, async (req, res) => {
   try {
     // Extract the hash from the request body
     const { hash } = req.body;
-
     // Verify if the document is present in the database
     const document = await Document.findOne({ hash }).populate('userId', 'email username');
 
     // If the document is found, return a 200 status indicating its validity along with user information
     if (document) {
-      return res.status(200).json({ message: 'Document is valid', user: document.userId });
+      return res.status(200).json({ message: 'Document is valid', user: document.userId, documentId: document._id});
     } else {
       return res.status(204).json({ message: 'Document is not valid' });
     }
@@ -56,26 +55,6 @@ router.post('/verify', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-router.get('/audit-logs/:documentId', verifyToken, async (req, res) => {
-  try {
-    const { documentId } = req.params;
-
-    // Find the document by its ID to ensure it exists
-    const document = await Document.findById(documentId);
-    if (!document) {
-      return res.status(404).json({ message: 'Document not found' });
-    }
-
-    // Fetch audit logs associated with the document based on its ID
-    const auditLogs = await AuditLog.find({ documentId }).populate('userId', 'username email');
-    res.status(200).json(auditLogs);
-  } catch (error) {
-    console.error('Error fetching audit logs:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
 
 
 // Route to check if a document with a given hash exists
@@ -145,6 +124,13 @@ router.get('/audit-logs/:documentId', verifyToken, async (req, res) => {
   try {
     const { documentId } = req.params;
 
+    // Find the document by its ID to ensure it exists
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).json({ message: 'Document not found' });
+    }
+
+    // Fetch audit logs associated with the document based on its ID
     const auditLogs = await AuditLog.find({ documentId }).populate('userId', 'username email');
     res.status(200).json(auditLogs);
   } catch (error) {

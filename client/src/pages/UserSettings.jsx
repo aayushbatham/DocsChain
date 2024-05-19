@@ -1,124 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import 'animate.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserSettings = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [userProfile, setUserProfile] = useState({ email: '', name: '' });
+  const notifySuccess = () => toast.success('Password Changed');
+  const notifyError = () => toast.error('Current Password is Wrong!');
 
   useEffect(() => {
-    // Fetch user's information (username) from the backend
-    const fetchUserData = async () => {
+    const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/user/profile', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+        const response = await axios.get('http://localhost:4000/user/details', {
+          headers: { Authorization: localStorage.getItem('token') },
         });
-        setUsername(response.data.username);
+        setUserProfile(response.data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching user profile:', error);
       }
     };
 
-    fetchUserData();
+    fetchUserProfile();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
 
-    // Validation checks for password change
-    if (newPassword !== confirmPassword) {
-      setMessage('Passwords do not match');
-      return;
-    }
-
-    // Make API call to update user's information (username and password)
     try {
-      const response = await axios.put(
-        'http://localhost:4000/user/settings',
-        {
-          username,
-          password,
-          newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
+      const response = await axios.post(
+        'http://localhost:4000/user/change-password',
+        { currentPassword, newPassword, confirmPassword },
+        { headers: { Authorization: localStorage.getItem('token') } }
       );
+      notifySuccess();
       setMessage(response.data.message);
     } catch (error) {
-      setMessage('Error updating user information');
-      console.error('Error updating user information:', error);
+      notifyError();
+      console.error('Error changing password:', error.response.data.message);
+      setMessage(error.response.data.message);
     }
   };
 
   return (
-    <div className="flex justify-center h-screen">
-      <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-lg overflow-hidden shadow-md mb-8">
-          <div className="px-6 py-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 mr-4">
-                <img className="h-12 w-12 rounded-full object-cover" src="profile.jpg" alt="Profile" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-gray-800">{username}</h2>
-                <p className="text-gray-600">@{username}</p>
-              </div>
-            </div>
-          </div>
+    <div className='bg-gray-100 w-full h-full flex'>
+      <div className="container mx-auto p-4 max-w-lg items-center">
+      <div className="bg-white shadow-md rounded-lg p-6 animate__animated animate__fadeIn">
+        <h2 className="text-2xl font-bold mb-4 text-center">User Settings</h2>
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">Profile Information</h3>
+          <p><strong>Email:</strong> {userProfile.email}</p>
+          <p><strong>Name:</strong> {userProfile.name}</p>
         </div>
-        <div className="bg-white rounded-lg overflow-hidden shadow-md">
-          <div className="px-6 py-4">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Change Password</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block mb-2 font-semibold">Current Password:</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 font-semibold">New Password:</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 font-semibold">Confirm New Password:</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-              >
-                Save Changes
-              </button>
-            </form>
-            {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
+        <form onSubmit={handleChangePassword} className="space-y-4">
+          <h3 className="text-xl font-semibold mb-2">Change Password</h3>
+          <div>
+            <input
+              type="password"
+              placeholder="Current Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
           </div>
-        </div>
+          <div>
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors duration-300"
+          >
+            Change Password
+          </button>
+          {message && <p className="text-center mt-4 text-red-500">{message}</p>}
+        </form>
       </div>
     </div>
+    <div>
+      <ToastContainer/>
+    </div>
+    </div>
+    
   );
 };
 

@@ -13,6 +13,7 @@
     "@thirdweb-dev/react": "^4.6.1",
     "@thirdweb-dev/sdk": "^4.0.62",
     "@thirdweb-dev/storage": "github:thirdweb-dev/storage",
+    "animate.css": "^4.1.1",
     "axios": "^1.6.8",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
@@ -24,6 +25,7 @@
     "react-router-dom": "^6.23.0",
     "react-router-hash-link": "^2.4.3",
     "react-toastify": "^10.0.5",
+    "react-transition-group": "^4.4.5",
     "redirect": "^0.2.0",
     "universal-cookie": "^7.1.4",
     "uuid": "^9.0.1"
