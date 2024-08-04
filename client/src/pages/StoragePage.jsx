@@ -18,7 +18,7 @@ const StoragePage = () => {
     const fetchDocuments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/document/document",
+          "http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/document",
           {
             headers: { Authorization: `${localStorage.getItem("token")}` },
           }
