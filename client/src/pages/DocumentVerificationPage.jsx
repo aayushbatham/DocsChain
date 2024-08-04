@@ -30,7 +30,7 @@ const DocumentVerificationPage = () => {
   
       // Send the hash to the backend for verification
       const response = await axios.post(
-        'http://localhost:4000/document/verify',
+        'http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/verify',
         { hash },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
@@ -58,7 +58,7 @@ const DocumentVerificationPage = () => {
   const fetchAuditLogs = async (documentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/document/audit-logs/${documentId}`,
+        `http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/audit-logs/${documentId}`,
         { headers: { Authorization: localStorage.getItem('token') } }
       );
       setAuditLogs(response.data);
