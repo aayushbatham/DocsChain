@@ -1,4 +1,4 @@
-# Docs chain - Document Verification, Update, and Storage System using IPFS.
+# Docs chain - Document Update, and Storage System using IPFS.
 
 Docs chain is a document management system built with the MERN stack (MongoDB, Express.js, React, Node.js) and utilizes IPFS (InterPlanetary File System) for decentralized storage and retrieval of documents. Pinata is used as the IPFS service provider for pinning files.
 
@@ -31,7 +31,7 @@ Docs chain is a document management system built with the MERN stack (MongoDB, E
 2. Navigate to the project directory:
 
    ```bash
-   cd document-verification-ipfs
+   cd <repo_name>
    ```
 
 3. Install dependencies for the backend and frontend:
