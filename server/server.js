@@ -10,15 +10,20 @@ const document = require('./routes/documentRoute');
 
 const app = express();
 
-const clientOrigin = process.env.CLIENT_ORIGIN || "https://docs-chain.vercel.app/";
+// Add CORS configuration here
+const allowedOrigins = ['https://docs-chain.vercel.app'];
 
-const corsOptions = {
-  origin: clientOrigin,  // Frontend origin
-  credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
-};
-
-// Use CORS with the options
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin like mobile apps, or postman
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy does not allow access from this origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 const PORT = process.env.PORT || 4000;
 
 // Middleware
