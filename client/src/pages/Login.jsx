@@ -11,19 +11,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_DEPLOYMENT_URL}/user/login`, {
-        email,
-        password
-      }, {
-        withCredentials: true // This ensures cookies are sent and received
-      });
-      console.log(response);
+      const response = await axios.post(
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/user/login`, 
+        { email, password }, 
+        { withCredentials: true }
+      );
       
       if (response.status === 200) {
+        // Store the token in localStorage
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('token', Cookies.get('jwtToken'));
+        localStorage.setItem('token', response.data.token); // Use token from the response
+        
         window.location.href = '/dashboard';
-      
       } else {
         console.error(response.data.message);
         setMessage(response.data.message);
@@ -33,7 +32,6 @@ const Login = () => {
       setMessage('Internal server error');
     }
   };
-
   return (
     <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <Navbar />

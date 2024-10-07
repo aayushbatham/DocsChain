@@ -42,23 +42,15 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, { expiresIn: '1h' });
-    res.cookie('jwtToken', token, {
-      path: '/',
-      maxAge: 3600000,
-      secure: false, // Change to true in production
-    });
-    res.cookie('hello', token, {
-      path: '/world',
-      maxAge: 3600000,
-      secure: false, // Change to true in production
-    });
 
-    return res.status(200).json({ message: 'Login successful', user });
+    // Return the token in the response body instead of as a cookie
+    return res.status(200).json({ message: 'Login successful', user, token });
   } catch (error) {
     console.error('Error in login:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 exports.logout = async (req, res) => {
   res.clearCookie('jwtToken', { path: '/' });
