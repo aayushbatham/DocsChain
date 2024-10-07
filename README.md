@@ -9,6 +9,13 @@ Docs chain is a document management system built with the MERN stack (MongoDB, E
 - **Decentralized Storage:** Utilize IPFS for decentralized and censorship-resistant storage of documents.
 - **User Authentication:** Authenticate users securely and manage access to documents based on user roles and permissions.
 
+## Screenshots
+
+![Landing Page](https://raw.githubusercontent.com/aayushbatham/DocsChain/main/assets/Landing.png)
+
+![Dashboard](https://raw.githubusercontent.com/aayushbatham/DocsChain/main/assets/Home.png)
+*Dashboard where all your documents are present which are securely stored in an IPFS decentralized storage*
+
 ## Technologies Used
 
 - **MERN Stack:**
