@@ -17,7 +17,7 @@ const DocumentUpdatePage = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/document/document', {
+        const response = await axios.get(`${import.meta.env.VITE_DEPLOYMENT_URL}/document/document`, {
           headers: { Authorization: localStorage.getItem('token') }
         });
         setDocuments(response.data);
@@ -65,7 +65,7 @@ const DocumentUpdatePage = () => {
       console.log('IPFS URL:', ipfsUrl);
 
       const response = await axios.put(
-        'http://localhost:3000/document/update',
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/update`,
         {
           documentId: selectedDocument,
           type: type,
@@ -89,7 +89,7 @@ const DocumentUpdatePage = () => {
   const fetchAuditLogs = async (documentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/document/audit-logs/${documentId}`,
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/audit-logs/${documentId}`,
         { headers: { Authorization: localStorage.getItem('token') } }
       );
       setAuditLogs(response.data);

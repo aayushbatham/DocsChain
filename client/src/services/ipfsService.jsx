@@ -18,7 +18,7 @@ const IpfsService = () => {
 
       // Check if the document already exists in the backend database
       const checkResponse = await axios.get(
-        `http://localhost:3000/document/check/${hash}`,
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/check/${hash}`,
         {
           headers: { Authorization: `${localStorage.getItem("token")}` },
         }
@@ -56,7 +56,7 @@ const IpfsService = () => {
       const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${resData.IpfsHash}`;
 
       await axios.post(
-        "http://localhost:3000/document/document",
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/document`,
         { ipfsUrl, type, hash, userId: localStorage.getItem("userId") },
         {
           headers: { Authorization: `${localStorage.getItem("token")}` },

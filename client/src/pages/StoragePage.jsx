@@ -18,7 +18,7 @@ const StoragePage = () => {
     const fetchDocuments = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/document/document",
+          `${import.meta.env.VITE_DEPLOYMENT_URL}/document/document`,
           {
             headers: { Authorization: `${localStorage.getItem("token")}` },
           }

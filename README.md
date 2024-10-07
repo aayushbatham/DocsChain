@@ -60,7 +60,7 @@ Docs chain is a document management system built with the MERN stack (MongoDB, E
    npm run dev
    ```
 
-6. Access the application at `http://localhost:3000`.
+6. Access the application at `http://import.meta.env.VITE_DEPLOYMENT_URL`.
 
 ## Usage
 

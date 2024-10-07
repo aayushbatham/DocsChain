@@ -10,8 +10,10 @@ const document = require('./routes/documentRoute');
 
 const app = express();
 
+const clientOrigin = process.env.CLIENT_ORIGIN;
+
 const corsOptions = {
-  origin: 'http://localhost:5173',  // Frontend origin
+  origin: clientOrigin,  // Frontend origin
   credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
 };
 

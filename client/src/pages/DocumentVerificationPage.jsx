@@ -28,7 +28,7 @@ const DocumentVerificationPage = () => {
   
       // Send the hash to the backend for verification
       const response = await axios.post(
-        'http://localhost:3000/document/verify',
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/verify`,
         { hash },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
@@ -53,7 +53,7 @@ const DocumentVerificationPage = () => {
   const fetchAuditLogs = async (documentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/document/audit-logs/${documentId}`,
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/document/audit-logs/${documentId}`,
         { headers: { Authorization: localStorage.getItem('token') } }
       );
       setAuditLogs(response.data);

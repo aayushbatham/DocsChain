@@ -16,7 +16,7 @@ const UserSettings = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user/details', {
+        const response = await axios.get(`${import.meta.env.VITE_DEPLOYMENT_URL}/user/details`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
         setUserProfile(response.data);
@@ -33,7 +33,7 @@ const UserSettings = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/user/change-password',
+        `${import.meta.env.VITE_DEPLOYMENT_URL}/user/change-password`,
         { currentPassword, newPassword, confirmPassword },
         { headers: { Authorization: localStorage.getItem('token') } }
       );

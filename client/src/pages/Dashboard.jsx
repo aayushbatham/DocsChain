@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   const Logout = async () => {
     try {
-      const response = await fetch("http://localhost:3000/user/logout", {
+      const response = await fetch(`${import.meta.env.VITE_DEPLOYMENT_URL}/user/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserName = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/user/details", {
+        const response = await axios.get(`${import.meta.env.VITE_DEPLOYMENT_URL}/user/details`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `${localStorage.getItem("token")}`,
