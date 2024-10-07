@@ -52,22 +52,27 @@ Docs chain is a document management system built with the MERN stack (MongoDB, E
 4. Configure environment variables:
 
    Create a `.env` file in the root directory and add the following variables:
-
+   server (.env)
    ```plaintext
-   PORT=5000
-   MONGO_URI=<your_mongodb_connection_string>
-   IPFS_ENDPOINT=https://api.pinata.cloud/pinning/pinFileToIPFS
-   PINATA_API_KEY=<your_pinata_api_key>
-   PINATA_SECRET_API_KEY=<your_pinata_secret_api_key>
+   PORT = 
+   SECRET = ""
+   MONGO_URI = ""
+   clientOrigin = ""
    ```
-
-5. Start the development server:
+   client (.env)
+   ```plaintext
+   VITE_PINATA_JWT=""
+   VITE_PINATA_SECERET = ""
+   VITE_DEPLOYMENT_URL = ""
+   ```
+   **You can create your own pinata storage at https://pinata.cloud/**
+6. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-6. Access the application at `http://import.meta.env.VITE_DEPLOYMENT_URL`.
+7. Access the application at `http://import.meta.env.VITE_DEPLOYMENT_URL`.
 
 ## Usage
 
