@@ -10,20 +10,15 @@ const document = require('./routes/documentRoute');
 
 const app = express();
 
-// Add CORS configuration here
-const allowedOrigins = ['https://docs-chain.vercel.app'];
-
+// Allow CORS from your Vercel domain
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin like mobile apps, or postman
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy does not allow access from this origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  }
+  origin: ['https://docs-chain.vercel.app'], // Your Vercel domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow necessary methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Include the headers you are using in requests
+  credentials: true, // Add if you are using cookies or sessions
 }));
+
+app.options('*', cors()); // Preflight requests for all routes
 const PORT = process.env.PORT || 4000;
 
 // Middleware
@@ -35,6 +30,9 @@ app.use(cookieParser());
 app.use('/user', userRoutes);
 app.use('/document', document);
 
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
 
 // Start the server
 app.listen(PORT, () => {
