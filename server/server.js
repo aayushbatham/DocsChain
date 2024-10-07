@@ -10,7 +10,7 @@ const document = require('./routes/documentRoute');
 
 const app = express();
 
-const clientOrigin = process.env.CLIENT_ORIGIN;
+const clientOrigin = process.env.CLIENT_ORIGIN || "https://docs-chain.vercel.app/";
 
 const corsOptions = {
   origin: clientOrigin,  // Frontend origin
