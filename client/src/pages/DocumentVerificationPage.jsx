@@ -3,21 +3,19 @@ import axios from 'axios';
 import generateFileHash from '../services/generateHash';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDropzone } from 'react-dropzone';
 
 const DocumentVerificationPage = () => {
   const [file, setFile] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [auditLogs, setAuditLogs] = useState([]);
+  
   const notifySuccess = () => toast.success('Document is valid');
   const notifyError = () => toast.error('Document is not valid');
   const notifyNoFile = () => toast.error('Please select a file');
 
-  const onDrop = (acceptedFiles) => {
-    setFile(acceptedFiles[0]);
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, noClick: true });
 
   const verifyDocument = async () => {
     if (!file) {
@@ -30,15 +28,14 @@ const DocumentVerificationPage = () => {
   
       // Send the hash to the backend for verification
       const response = await axios.post(
-        'http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/verify',
+        'http://localhost:3000/document/verify',
         { hash },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
   
       if (response.status === 200) {
-        const { message, user} = response.data;
+        const { message, user } = response.data;
         console.log('Verification successful. User:', user);
-        console.log("This")
         notifySuccess();
         setVerificationResult(user);
         fetchAuditLogs(response.data.documentId); // Pass documentId to fetchAuditLogs
@@ -48,8 +45,6 @@ const DocumentVerificationPage = () => {
         setAuditLogs([]); // Clear audit logs
         notifyError();
       }
-  
-      console.log('Verification response:', response.data);
     } catch (error) {
       console.error('Error verifying document:', error);
     }
@@ -58,7 +53,7 @@ const DocumentVerificationPage = () => {
   const fetchAuditLogs = async (documentId) => {
     try {
       const response = await axios.get(
-        `http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/audit-logs/${documentId}`,
+        `http://localhost:3000/document/audit-logs/${documentId}`,
         { headers: { Authorization: localStorage.getItem('token') } }
       );
       setAuditLogs(response.data);
@@ -70,16 +65,12 @@ const DocumentVerificationPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Verify Your Document</h1>
-      <div
-        {...getRootProps()}
-        className={`flex flex-col items-center bg-white p-20 rounded-lg shadow-lg transition-transform transform ${isDragActive ? 'scale-200' : 'scale-200'} animate-fade-in`}
-      >
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p className="text-blue-500">Drop the files here...</p>
-        ) : (
-          <p className="text-gray-500">Drag 'n' drop a file here, or click to select one</p>
-        )}
+      <div className="flex flex-col items-center bg-white p-10 rounded-lg shadow-lg">
+        <input
+          type="file"
+          onChange={handleFileChange}
+          className="border border-gray-300 rounded p-2"
+        />
         {file && (
           <p className="mt-4 text-green-500">
             Selected file: {file.name}
@@ -93,14 +84,14 @@ const DocumentVerificationPage = () => {
         </button>
       </div>
       {verificationResult && (
-        <div className="mt-8 p-4 bg-green-100 rounded-lg shadow-md animate-fade-in-down">
+        <div className="mt-8 p-4 bg-green-100 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold">Associated User:</h2>
           <p>Email: {verificationResult.email}</p>
           <p>Username: {verificationResult.username}</p>
         </div>
       )}
       {auditLogs.length > 0 && (
-        <div className="mt-8 p-4 bg-grey-100 rounded-lg shadow-md animate-fade-in-down">
+        <div className="mt-8 p-4 bg-gray-100 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold">Audit Logs:</h2>
           {auditLogs.map((log) => (
             <div key={log._id} className="border-b border-gray-300 mb-2 pb-2">

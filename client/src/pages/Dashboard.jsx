@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   const Logout = async () => {
     try {
-      const response = await fetch("http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/user/logout", {
+      const response = await fetch("http://localhost:3000/user/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

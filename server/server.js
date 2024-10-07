@@ -9,17 +9,20 @@ const userRoutes = require('./routes/userRoutes');
 const document = require('./routes/documentRoute'); 
 
 const app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:5173',  // Frontend origin
+  credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
+};
+
+// Use CORS with the options
+app.use(cors(corsOptions));
 const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: 'http://localhost:5173', // Frontend URL
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Authorization'],
-}));
+
 
 // Routes
 app.use('/user', userRoutes);

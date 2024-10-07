@@ -17,7 +17,7 @@ const DocumentUpdatePage = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await axios.get('http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/document', {
+        const response = await axios.get('http://localhost:3000/document/document', {
           headers: { Authorization: localStorage.getItem('token') }
         });
         setDocuments(response.data);
@@ -65,7 +65,7 @@ const DocumentUpdatePage = () => {
       console.log('IPFS URL:', ipfsUrl);
 
       const response = await axios.put(
-        'http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/update',
+        'http://localhost:3000/document/update',
         {
           documentId: selectedDocument,
           type: type,
@@ -89,7 +89,7 @@ const DocumentUpdatePage = () => {
   const fetchAuditLogs = async (documentId) => {
     try {
       const response = await axios.get(
-        `http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/document/audit-logs/${documentId}`,
+        `http://localhost:3000/document/audit-logs/${documentId}`,
         { headers: { Authorization: localStorage.getItem('token') } }
       );
       setAuditLogs(response.data);

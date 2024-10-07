@@ -1,28 +1,35 @@
-import axios from 'axios';
+import React from 'react';
 
-const downloadDocumentFromPinata = async (pinataHash) => {
+const downloadDocumentFromPinata = async (pinataUrl) => {
   try {
+    // Fetch the file from the IPFS gateway
+    const response = await fetch(pinataUrl);
 
-    // Extract IPFS hash from Pinata metadata
-    const response = pinataHash;
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
 
-    // Create a Blob from the response data
-    const blob = new Blob([response.data]);
+    // Convert the response to a Blob (binary data)
+    const blob = await response.blob();
 
-    // Create an object URL from the Blob
+    // Create a link element to download the file
     const url = window.URL.createObjectURL(blob);
-
-    // Create a hidden anchor element
     const link = document.createElement('a');
     link.href = url;
-    link.download = ''; // Set the filename here
+
+    // Extract file name from the URL (or set it manually)
+    const filename = pinataUrl.split('/').pop() || 'downloaded-file';
+    link.download = filename; // Set the download attribute to the file name
+
+    // Append link to the body, click to trigger download, and remove it after
     document.body.appendChild(link);
-
-    // Simulate a click on the anchor element to trigger the download
     link.click();
-
-    // Remove the anchor element from the DOM
     document.body.removeChild(link);
+
+    // Clean up the object URL
+    window.URL.revokeObjectURL(url);
+    
+    console.log('File downloaded successfully!');
   } catch (error) {
     console.error('Error downloading document:', error);
   }

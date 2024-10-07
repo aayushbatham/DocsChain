@@ -16,7 +16,7 @@ const UserSettings = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/user/details', {
+        const response = await axios.get('http://localhost:3000/user/details', {
           headers: { Authorization: localStorage.getItem('token') },
         });
         setUserProfile(response.data);
@@ -33,7 +33,7 @@ const UserSettings = () => {
 
     try {
       const response = await axios.post(
-        'http://ec2-47-129-39-202.ap-southeast-1.compute.amazonaws.com:4000/user/change-password',
+        'http://localhost:3000/user/change-password',
         { currentPassword, newPassword, confirmPassword },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
